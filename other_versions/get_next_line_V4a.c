@@ -6,7 +6,7 @@
 /*   By: jgarcia3 <jgarcia3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 18:20:28 by jgarcia3          #+#    #+#             */
-/*   Updated: 2024/03/20 00:38:30 by jgarcia3         ###   ########.fr       */
+/*   Updated: 2024/03/19 20:55:53 by jgarcia3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,32 +62,30 @@ char	*load_until_br(char *previous_line, int fd) //3
 	int		error;
 
 	error = 0;
-
+	buffer = ft_calloc(BUFFER_SIZE, sizeof(char));
+	if (!buffer)
+		return (NULL);
 	while (!ft_strchr_mod(previous_line, '\n')) //Si NO encuentra \n
 	{
-		buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-		if (!buffer)
-			return (NULL);
 		error = read(fd, buffer, BUFFER_SIZE);
 		if (error == -1)
 			return (free(buffer), free(previous_line), NULL);
-		//printf("\nstrbuffer->%zu\n", ft_strlen(buffer));
-		//printf("BUFFER_SIZE->%i\n", BUFFER_SIZE);
-		//if (ft_strlen(buffer) != BUFFER_SIZE)
+		if (error == 0)
+			return (free(buffer), NULL);
+		if (ft_strchr_mod(buffer, '\0'))
+			{
+
+			}
 		previous_line = merge(previous_line, buffer);
-		if (ft_strlen(previous_line) == 0)
-			return (free(buffer), buffer = NULL, NULL);
-		if (ft_strlen(buffer) != BUFFER_SIZE)
-			return (free(buffer), buffer = NULL, previous_line);
-		free(buffer);
-		buffer = NULL;
+
 	}
+	free(buffer);
+	buffer = NULL;
 	return (previous_line);
 }
 
 /*
 	devuelve un puntero a un string que contiene s1 DESDE \n
-	TIENE UN BUG. CUANDO BUFFER_SIZE = 5 Y UNA CADENA DE 200, NO DEVUELVE EL PUNTERO CORRECTAMENTE
 */
 char	*new_previous_line(char *s1) //4
 {
@@ -100,8 +98,6 @@ char	*new_previous_line(char *s1) //4
 	{
 		i++;
 	}
-	if (ft_strlen(s1) == (size_t)i)
-		return(free(s1), NULL);
 	str = ft_calloc((ft_strlen(s1) - i) + 1, sizeof(char));
 	if (str == NULL)
 		return (NULL);
@@ -152,15 +148,15 @@ int	 main()
 {
 	char	*line = NULL;
 
-	//atexit(leaks_cheker);
+	atexit(leaks_cheker);
 	int	fd;
 	int	i = 0;
 
 	fd = open("./texto", O_RDONLY);
-	while (i != 5000)
+	while (i != 100)
 	{
 		line = get_next_line(fd);
-		printf("|---|%s", line);
+		printf("---%s", line);
 		if (line == NULL)
 			return (EXIT_SUCCESS);
 		free(line);
@@ -169,19 +165,3 @@ int	 main()
 
 	close(fd);
 }
-/*
-leaks:
-- archivo vacio
--
- */
-
-/* //Tester for new_previous_line
-int    main()
-{
-    char    s0[] = "sdafaf";
-    char    *s1 = NULL;
-
-    s1 = strdup(s0);
-
-    printf("%s", new_previous_line(s1));
-} */

@@ -6,7 +6,7 @@
 /*   By: jgarcia3 <jgarcia3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 18:21:46 by jgarcia3          #+#    #+#             */
-/*   Updated: 2024/03/19 20:47:42 by jgarcia3         ###   ########.fr       */
+/*   Updated: 2024/03/18 13:16:43 by jgarcia3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 /*
 	Toma s1 y s2, y retorna s1 + s2 en s1 controlando leaks
 */
-
-
 char	*merge(char *s1, char *s2)
 {
 	char	*temp;
@@ -93,7 +91,49 @@ char	*ft_strdup(const char *s1)
 	return (str);
 }
 
+/* copia solo hasta el salto de linea*/
+char	*ft_strdup_mod(const char *s1)
+{
+	size_t	i;
+	char	*str;
 
+	i = 0;
+	str = ft_calloc(ft_strlen(s1) + 1, sizeof(char));
+	if (str == NULL)
+	{
+		return (NULL);
+	}
+	while (i < ft_strlen(s1) && s1[i] != '\n')
+	{
+		str[i] = s1[i];
+		i++;
+	}
+	if (s1[i] == '\n')
+	{
+		str[i] = '\n';
+		str[i + 1] = '\0';
+	}
+	return (str);
+}
+
+/* Si existe el caracter devuelve la pos del caracter || True */
+int		ft_strchr_mod(const char *s, int c)
+{
+	int	i;
+
+	if (s == NULL)
+		return (-1);
+	i = 0;
+	while (s[i] != '\0')
+	{
+		if (s[i] == (char)c)
+			return (i);
+		i++;
+	}
+	if ((char)c == '\0') //habrá que cambiar esto para que pueda encontrar nulos antes de buffer_size
+		return (i);
+	return (-1);
+}
 
 /* int main()
 {
