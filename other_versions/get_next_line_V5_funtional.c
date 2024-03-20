@@ -6,7 +6,7 @@
 /*   By: jgarcia3 <jgarcia3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 18:20:28 by jgarcia3          #+#    #+#             */
-/*   Updated: 2024/03/20 12:53:39 by jgarcia3         ###   ########.fr       */
+/*   Updated: 2024/03/20 09:56:30 by jgarcia3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,32 +60,31 @@ char	*load_until_br(char *previous_line, int fd) //3
 {
 	char	*buffer;
 	int		error;
-	int		len_prev_line;
+
+	error = 0;
 
 	while (!ft_strchr_mod(previous_line, '\n')) //Si NO encuentra \n
 	{
-		if (previous_line)
-			len_prev_line = ft_strlen(previous_line); // para ahorra en procesos
-		else
-			len_prev_line = 0;
 		buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 		if (!buffer)
 			return (NULL);
 		error = read(fd, buffer, BUFFER_SIZE);
 		if (error == -1)
 			return (free(buffer), free(previous_line), NULL);
-		previous_line = merge(previous_line, buffer, len_prev_line);
+		previous_line = merge(previous_line, buffer);
 		if (ft_strlen(previous_line) == 0)
 			return (free(buffer), free(previous_line), buffer = NULL, NULL);
 		if (ft_strlen(buffer) != BUFFER_SIZE)
 			return (free(buffer), buffer = NULL, previous_line);
 		free(buffer);
+		buffer = NULL;
 	}
 	return (previous_line);
 }
 
 /*
 	devuelve un puntero a un string que contiene s1 DESDE \n
+	TIENE UN BUG. CUANDO BUFFER_SIZE = 5 Y UNA CADENA DE 200, NO DEVUELVE EL PUNTERO CORRECTAMENTE
 */
 char	*new_previous_line(char *s1) //4
 {
@@ -99,7 +98,7 @@ char	*new_previous_line(char *s1) //4
 		i++;
 	}
 	if (ft_strlen(s1) == (size_t)i)
-		return (free(s1), NULL);
+		return(free(s1), NULL);
 	str = ft_calloc((ft_strlen(s1) - i) + 1, sizeof(char));
 	if (str == NULL)
 		return (NULL);
@@ -133,10 +132,11 @@ char	*get_next_line(int fd) //5
 	// Copia de previous line a previous line desde después de '\n'.
 	// Verificar si no hay \0
 	previous_line = new_previous_line(previous_line);
+
 	return (line);
 }
 
-/* void	leaks_cheker()
+void	leaks_cheker()
 {
 	system("leaks a.out");
 }
@@ -165,9 +165,20 @@ int	 main()
 	}
 
 	close(fd);
-} */
-
+}
 /*
-	70k characters in 12,2 s
-	80k characters in 15,6 s
-*/
+leaks:
+- archivo vacio
+-
+ */
+
+/* //Tester for new_previous_line
+int    main()
+{
+    char    s0[] = "sdafaf";
+    char    *s1 = NULL;
+
+    s1 = strdup(s0);
+
+    printf("%s", new_previous_line(s1));
+} */

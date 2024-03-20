@@ -6,7 +6,7 @@
 /*   By: jgarcia3 <jgarcia3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 18:21:46 by jgarcia3          #+#    #+#             */
-/*   Updated: 2024/03/20 12:31:51 by jgarcia3         ###   ########.fr       */
+/*   Updated: 2024/03/20 12:11:17 by jgarcia3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 /*
 	Toma s1 y s2, y retorna s1 + s2 en s1 controlando leaks
 */
+
+
 char	*merge(char *s1, char *s2, int len_prev_line)
 {
 	char	*temp;
@@ -33,7 +35,7 @@ char	*merge(char *s1, char *s2, int len_prev_line)
 	if (!s1)
 		return (NULL);
 	i = -1;
-	while (temp[++i])
+	while (temp[++i]) //aqui se podria ahorra tiempo?
 		s1[i] = temp[i];
 	j = 0;
 	while (s2[j])
@@ -90,3 +92,23 @@ char	*ft_strdup_len_prev_line(const char *s1, int len_prev_line)
 	}
 	return (str);
 }
+
+/* int main()
+{
+	if(!ft_strchr_mod("hola", 'a') && !ft_strchr_mod("hola", 'w'))
+	{
+		printf("se imprime");
+	}
+	else
+		printf("no se imprime");
+	//printf("%s", ft_strchr_mod("hola", '\n'));
+} */
+
+/* int main()
+{
+	printf("\n%s\n", ft_strdup_mod("hola\n"));
+} */
+/* int main()
+{
+	printf("\n%s\n", ft_strdup(""));
+} */

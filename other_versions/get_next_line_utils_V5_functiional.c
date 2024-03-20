@@ -6,7 +6,7 @@
 /*   By: jgarcia3 <jgarcia3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 18:21:46 by jgarcia3          #+#    #+#             */
-/*   Updated: 2024/03/20 12:31:51 by jgarcia3         ###   ########.fr       */
+/*   Updated: 2024/03/20 01:22:52 by jgarcia3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 /*
 	Toma s1 y s2, y retorna s1 + s2 en s1 controlando leaks
 */
-char	*merge(char *s1, char *s2, int len_prev_line)
+
+
+char	*merge(char *s1, char *s2)
 {
 	char	*temp;
 	int		i;
@@ -27,9 +29,9 @@ char	*merge(char *s1, char *s2, int len_prev_line)
 		if (!s1)
 			return (NULL);
 	}
-	temp = ft_strdup_len_prev_line(s1, len_prev_line);
+	temp = ft_strdup(s1);
 	free(s1);
-	s1 = malloc((len_prev_line + ft_strlen(s2) + 1) * sizeof(char));
+	s1 = malloc((ft_strlen(temp) + ft_strlen(s2) + 1) * sizeof(char));
 	if (!s1)
 		return (NULL);
 	i = -1;
@@ -74,19 +76,39 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
-char	*ft_strdup_len_prev_line(const char *s1, int len_prev_line)
+char	*ft_strdup(const char *s1)
 {
 	size_t	i;
 	char	*str;
 
 	i = 0;
-	str = ft_calloc(len_prev_line + 1, sizeof(char));
+	str = ft_calloc(ft_strlen(s1) + 1, sizeof(char));
 	if (str == NULL)
 		return (NULL);
-	while ((int)i < len_prev_line)
+	while (i < ft_strlen(s1))
 	{
 		str[i] = s1[i];
 		i++;
 	}
 	return (str);
 }
+
+/* int main()
+{
+	if(!ft_strchr_mod("hola", 'a') && !ft_strchr_mod("hola", 'w'))
+	{
+		printf("se imprime");
+	}
+	else
+		printf("no se imprime");
+	//printf("%s", ft_strchr_mod("hola", '\n'));
+} */
+
+/* int main()
+{
+	printf("\n%s\n", ft_strdup_mod("hola\n"));
+} */
+/* int main()
+{
+	printf("\n%s\n", ft_strdup(""));
+} */

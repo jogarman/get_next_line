@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jgarcia3 <jgarcia3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 18:20:28 by jgarcia3          #+#    #+#             */
-/*   Updated: 2024/03/20 12:53:39 by jgarcia3         ###   ########.fr       */
+/*   Updated: 2024/03/20 12:59:46 by jgarcia3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,21 +118,21 @@ char	*new_previous_line(char *s1) //4
 char	*get_next_line(int fd) //5
 {
 	char		*line;
-	static char	*previous_line;
+	static char	*previous_line[OPEN_MAX];
 
 	if (fd >= OPEN_MAX || fd < 0 || BUFFER_SIZE == 0)
 		return (NULL);
 	// Si no hay salto de linea, cargará hasta encontrarlo
-	previous_line = load_until_br(previous_line, fd);
-	if (previous_line == NULL)
+	previous_line[fd] = load_until_br(previous_line[fd], fd);
+	if (previous_line[fd] == NULL)
 		return (NULL);
 	// Copia de previous_line a line solo hasta \n (incluido) + '\0'
-	line = ft_strdup_mod(previous_line);
+	line = ft_strdup_mod(previous_line[fd]);
 	if (line == NULL)
 		return (NULL);
 	// Copia de previous line a previous line desde después de '\n'.
 	// Verificar si no hay \0
-	previous_line = new_previous_line(previous_line);
+	previous_line[fd] = new_previous_line(previous_line[fd]);
 	return (line);
 }
 
