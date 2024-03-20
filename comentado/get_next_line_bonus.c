@@ -1,18 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
+/*   get_next_line_bonus_comentado.c                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jgarcia3 <jgarcia3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 18:20:28 by jgarcia3          #+#    #+#             */
-/*   Updated: 2024/03/20 15:12:12 by jgarcia3         ###   ########.fr       */
+/*   Updated: 2024/03/20 15:11:14 by jgarcia3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_strdup_mod(const char *s1)
+/* copia solo hasta el salto de linea */
+char	*ft_strdup_mod(const char *s1) //1
 {
 	size_t	i;
 	char	*str;
@@ -36,7 +37,8 @@ char	*ft_strdup_mod(const char *s1)
 	return (str);
 }
 
-char	*ft_strchr_mod(const char *s, int c)
+/* Si existe el caracter devuelve el puntero || True */
+char	*ft_strchr_mod(const char *s, int c) //2
 {
 	int	i;
 
@@ -54,16 +56,16 @@ char	*ft_strchr_mod(const char *s, int c)
 	return (NULL);
 }
 
-char	*load_until_br(char *previous_line, int fd)
+char	*load_until_br(char *previous_line, int fd) //3
 {
 	char	*buffer;
 	int		error;
 	int		len_prev_line;
 
-	while (!ft_strchr_mod(previous_line, '\n'))
+	while (!ft_strchr_mod(previous_line, '\n')) //Si NO encuentra \n
 	{
 		if (previous_line)
-			len_prev_line = ft_strlen(previous_line);
+			len_prev_line = ft_strlen(previous_line); // para ahorra en procesos
 		else
 			len_prev_line = 0;
 		buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
@@ -82,14 +84,17 @@ char	*load_until_br(char *previous_line, int fd)
 	return (previous_line);
 }
 
-char	*new_previous_line(char *s1)
+/*
+	devuelve un puntero a un string que contiene s1 DESDE \n
+*/
+char	*new_previous_line(char *s1) //4
 {
 	int		i;
 	int		j;
 	char	*str;
 
 	i = 0;
-	while (s1[i] != '\n' && s1[i] != '\0')
+	while (s1[i] != '\n' && s1[i] != '\0') //si hay 0 liberar y retornar null
 	{
 		i++;
 	}
@@ -110,24 +115,29 @@ char	*new_previous_line(char *s1)
 	return (str);
 }
 
-char	*get_next_line(int fd)
+char	*get_next_line(int fd) //5
 {
 	char		*line;
 	static char	*previous_line[OPEN_MAX];
 
 	if (fd >= OPEN_MAX || fd < 0 || BUFFER_SIZE == 0)
 		return (NULL);
+	// Si no hay salto de linea, cargará hasta encontrarlo
 	previous_line[fd] = load_until_br(previous_line[fd], fd);
 	if (previous_line[fd] == NULL)
 		return (NULL);
+	// Copia de previous_line a line solo hasta \n (incluido) + '\0'
 	line = ft_strdup_mod(previous_line[fd]);
 	if (line == NULL)
 		return (NULL);
+	// Copia de previous line a previous line desde después de '\n'.
+	// Verificar si no hay \0
 	previous_line[fd] = new_previous_line(previous_line[fd]);
 	return (line);
 }
 
-/* void	leaks_cheker()
+/*
+void	leaks_cheker()
 {
 	system("leaks a.out");
 }

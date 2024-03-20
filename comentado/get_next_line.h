@@ -1,32 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_bonus.h                              :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jgarcia3 <jgarcia3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 18:18:37 by jgarcia3          #+#    #+#             */
-/*   Updated: 2024/03/20 15:33:23 by jgarcia3         ###   ########.fr       */
+/*   Updated: 2024/03/20 10:45:58 by jgarcia3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_BONUS_H
-# define GET_NEXT_LINE_BONUS_H
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1024
-# endif
+#  define BUFFER_SIZE 5
+# endif               //poner 1024
 
-# include <unistd.h>
-# include <limits.h>
-# include <stdint.h>
+# include <stdarg.h>
 # include <stdlib.h>
+# include <unistd.h>
+# include <stdio.h> //Borrar. Es para printf
+# include <limits.h>
 
+//principal
 char	*ft_strdup_len_prev_line(const char *s1, int len_prev_line);
 char	*ft_strdup_mod(const char *s1);
 char	*load_until_br(char *previous_line, int fd);
 char	*new_previous_line(char *s1);
 char	*get_next_line(int fd);
 
+//utils
 size_t	ft_strlen(const char *s);
 void	*ft_calloc(size_t count, size_t size);
 char	*ft_strjoin(char const *s1, char const *s2);

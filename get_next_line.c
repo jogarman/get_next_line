@@ -6,14 +6,14 @@
 /*   By: jgarcia3 <jgarcia3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 18:20:28 by jgarcia3          #+#    #+#             */
-/*   Updated: 2024/03/20 12:53:39 by jgarcia3         ###   ########.fr       */
+/*   Updated: 2024/03/20 15:18:51 by jgarcia3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-/* copia solo hasta el salto de linea */
-char	*ft_strdup_mod(const char *s1) //1
+/* copy until line break */
+char	*ft_strdup_mod(const char *s1)
 {
 	size_t	i;
 	char	*str;
@@ -37,8 +37,8 @@ char	*ft_strdup_mod(const char *s1) //1
 	return (str);
 }
 
-/* Si existe el caracter devuelve el puntero || True */
-char	*ft_strchr_mod(const char *s, int c) //2
+/* If char exist returns pointer to character */
+char	*ft_strchr_mod(const char *s, int c)
 {
 	int	i;
 
@@ -56,16 +56,16 @@ char	*ft_strchr_mod(const char *s, int c) //2
 	return (NULL);
 }
 
-char	*load_until_br(char *previous_line, int fd) //3
+char	*load_until_br(char *previous_line, int fd)
 {
 	char	*buffer;
 	int		error;
 	int		len_prev_line;
 
-	while (!ft_strchr_mod(previous_line, '\n')) //Si NO encuentra \n
+	while (!ft_strchr_mod(previous_line, '\n'))
 	{
 		if (previous_line)
-			len_prev_line = ft_strlen(previous_line); // para ahorra en procesos
+			len_prev_line = ft_strlen(previous_line);
 		else
 			len_prev_line = 0;
 		buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
@@ -85,16 +85,17 @@ char	*load_until_br(char *previous_line, int fd) //3
 }
 
 /*
-	devuelve un puntero a un string que contiene s1 DESDE \n
+	Returns a pointer to an string that contains s1 from \n
+	Its like copying the right side of the string
 */
-char	*new_previous_line(char *s1) //4
+char	*new_previous_line(char *s1)
 {
 	int		i;
 	int		j;
 	char	*str;
 
 	i = 0;
-	while (s1[i] != '\n' && s1[i] != '\0') //si hay 0 liberar y retornar null
+	while (s1[i] != '\n' && s1[i] != '\0')
 	{
 		i++;
 	}
@@ -115,28 +116,26 @@ char	*new_previous_line(char *s1) //4
 	return (str);
 }
 
-char	*get_next_line(int fd) //5
+char	*get_next_line(int fd)
 {
 	char		*line;
 	static char	*previous_line;
 
 	if (fd >= OPEN_MAX || fd < 0 || BUFFER_SIZE == 0)
 		return (NULL);
-	// Si no hay salto de linea, cargará hasta encontrarlo
 	previous_line = load_until_br(previous_line, fd);
 	if (previous_line == NULL)
 		return (NULL);
-	// Copia de previous_line a line solo hasta \n (incluido) + '\0'
 	line = ft_strdup_mod(previous_line);
 	if (line == NULL)
 		return (NULL);
-	// Copia de previous line a previous line desde después de '\n'.
-	// Verificar si no hay \0
 	previous_line = new_previous_line(previous_line);
 	return (line);
 }
 
-/* void	leaks_cheker()
+/*
+
+void	leaks_cheker()
 {
 	system("leaks a.out");
 }
@@ -144,12 +143,16 @@ char	*get_next_line(int fd) //5
 #include <fcntl.h>
 #include <stdio.h>
 #include <string.h>
-#include <fcntl.h> // Para la función open y los flags como O_RDONLY
+#include <fcntl.h> //  Open and O_RDONLY
+#include <stdlib.h>
+#include <unistd.h>
+
+#include <fcntl.h>
 int	 main()
 {
 	char	*line = NULL;
 
-	atexit(leaks_cheker);
+	//atexit(leaks_cheker);
 	int	fd;
 	int	i = 0;
 
@@ -163,7 +166,6 @@ int	 main()
 		free(line);
 		i++;
 	}
-
 	close(fd);
 } */
 

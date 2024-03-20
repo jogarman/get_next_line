@@ -6,14 +6,14 @@
 /*   By: jgarcia3 <jgarcia3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 18:21:46 by jgarcia3          #+#    #+#             */
-/*   Updated: 2024/03/20 15:16:33 by jgarcia3         ###   ########.fr       */
+/*   Updated: 2024/03/20 12:31:51 by jgarcia3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
 /*
-	Takes s1 y s2, and returns s1 + s2, in s1 consider leaks
+	Toma s1 y s2, y retorna s1 + s2 en s1 controlando leaks
 */
 char	*merge(char *s1, char *s2, int len_prev_line)
 {
