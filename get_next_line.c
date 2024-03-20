@@ -6,7 +6,7 @@
 /*   By: jgarcia3 <jgarcia3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 18:20:28 by jgarcia3          #+#    #+#             */
-/*   Updated: 2024/03/20 01:35:28 by jgarcia3         ###   ########.fr       */
+/*   Updated: 2024/03/20 01:44:05 by jgarcia3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ char	*get_next_line(int fd) //5
 	// Si no hay salto de linea, cargará hasta encontrarlo
 	previous_line = load_until_br(previous_line, fd);
 	if (previous_line == NULL)
-		return (free(previous_line), NULL);
+		return (NULL);
 	// Copia de previous_line a line solo hasta \n (incluido) + '\0'
 	line = ft_strdup_mod(previous_line);
 	if (line == NULL)
@@ -145,7 +145,7 @@ void	leaks_cheker()
 #include <stdio.h>
 #include <string.h>
 #include <fcntl.h> // Para la función open y los flags como O_RDONLY
-/* int	 main()
+int	 main()
 {
 	char	*line = NULL;
 
@@ -165,7 +165,7 @@ void	leaks_cheker()
 	}
 
 	close(fd);
-} */
+}
 /*
 leaks:
 - archivo vacio
