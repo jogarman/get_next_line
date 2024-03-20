@@ -6,7 +6,7 @@
 /*   By: jgarcia3 <jgarcia3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 18:20:28 by jgarcia3          #+#    #+#             */
-/*   Updated: 2024/03/20 00:38:30 by jgarcia3         ###   ########.fr       */
+/*   Updated: 2024/03/20 01:35:28 by jgarcia3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,12 +71,9 @@ char	*load_until_br(char *previous_line, int fd) //3
 		error = read(fd, buffer, BUFFER_SIZE);
 		if (error == -1)
 			return (free(buffer), free(previous_line), NULL);
-		//printf("\nstrbuffer->%zu\n", ft_strlen(buffer));
-		//printf("BUFFER_SIZE->%i\n", BUFFER_SIZE);
-		//if (ft_strlen(buffer) != BUFFER_SIZE)
 		previous_line = merge(previous_line, buffer);
 		if (ft_strlen(previous_line) == 0)
-			return (free(buffer), buffer = NULL, NULL);
+			return (free(buffer), free(previous_line), buffer = NULL, NULL);
 		if (ft_strlen(buffer) != BUFFER_SIZE)
 			return (free(buffer), buffer = NULL, previous_line);
 		free(buffer);
@@ -127,7 +124,7 @@ char	*get_next_line(int fd) //5
 	// Si no hay salto de linea, cargará hasta encontrarlo
 	previous_line = load_until_br(previous_line, fd);
 	if (previous_line == NULL)
-		return (NULL);
+		return (free(previous_line), NULL);
 	// Copia de previous_line a line solo hasta \n (incluido) + '\0'
 	line = ft_strdup_mod(previous_line);
 	if (line == NULL)
@@ -148,11 +145,11 @@ void	leaks_cheker()
 #include <stdio.h>
 #include <string.h>
 #include <fcntl.h> // Para la función open y los flags como O_RDONLY
-int	 main()
+/* int	 main()
 {
 	char	*line = NULL;
 
-	//atexit(leaks_cheker);
+	atexit(leaks_cheker);
 	int	fd;
 	int	i = 0;
 
@@ -168,7 +165,7 @@ int	 main()
 	}
 
 	close(fd);
-}
+} */
 /*
 leaks:
 - archivo vacio
