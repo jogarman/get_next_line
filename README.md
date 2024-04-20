@@ -1,6 +1,6 @@
 # Get_next_line
 
-## Yes! it´s a 42´s project.
+## A 42´s project.
 Get_next_line is apparently a simple function in C which read a line each time that is called. 
 The target of the project is about the understanding of static variables. 
 
