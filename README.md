@@ -12,7 +12,7 @@ The target of the project is about the understanding of static variables.
 
 • free()
 
-##Compilation
+## Compilation
 gcc -Wall -Wextra -Werror -D BUFFER_SIZE=42 <files>.c.
 
 
