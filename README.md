@@ -5,9 +5,11 @@ Get_next_line is apparently a simple function in C which read a line each time t
 The target of the project is about the understanding of static variables. 
 
 
-##External functs
+## External functs
 • read()
+
 • malloc() 
+
 • free()
 
 ##Compilation
